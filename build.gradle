@@ -2,13 +2,70 @@ plugins {
     id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id "com.github.node-gradle.node" version "2.2.3"
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+/**
+ * npm install start
+ */
+import com.moowork.gradle.node.npm.NpmTask
+
+node{
+    version = "14.13.0"
+    distBaseUrl = "https://nodejs.org/dist"
+
+    if(System.getenv("REQUIRE_NODE_INSTALL") != null && System.getenv("REQUIRE_NODE_INSTALL") == "TRUE"){
+        download = true
+    }
+    else{
+        download = false
+    }
+
+    workDir = file("${buildDir}/nodejs")
+    yarnWorkDir = file("${buildDir}/yarn")
+    nodeModulesDir = file("${projectDir}/app")
+    npmWorkDir = file("${buildDir}/npm")
+}
+
+task installDependencies(type: NpmTask) {
+    args = ["install"]
+    execOverrides {
+        it.workingDir = "${projectDir}/app"
+    }
+}
+
+task buildReactTask(type: NpmTask) {
+    // Before buildWeb can run, installDependencies must run
+    args = ["run", "build"]
+    execOverrides {
+        it.workingDir = "${projectDir}/app"
+    }
+}
+
+task copyFrontLib(type: Copy) {
+    dependsOn(buildReactTask)
+    from(file("${projectDir}/app/build"))
+    into(file("${buildDir}/resources/main/static"))
+}
+
+buildReactTask.dependsOn installDependencies
+copyFrontLib.dependsOn buildReactTask
+compileJava.dependsOn copyFrontLib
+
+/**
+ * npm install end
+ */
+
+
+/**
+ * npm install end
+ */
 configurations {
+
     compileOnly {
         extendsFrom annotationProcessor
     }
