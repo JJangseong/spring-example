@@ -12,3 +12,6 @@
 
 ### 2021-05-03
 1. 패키지 위치 실수로 실행 안되던 버그 수정
+2. Add Post Entity
+3. Add Comment Entity
+4. Add Create and GetById with Post
