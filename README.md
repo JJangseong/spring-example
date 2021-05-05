@@ -17,3 +17,9 @@
 4. Add Create and GetById with Post
 
 ### 2021-05-04
+1. Add CommentRepository
+2. Add Comment TestCode
+
+### 2021-05-05
+1. Updated fetch in Comment
+2. Add Post Delete and Update
