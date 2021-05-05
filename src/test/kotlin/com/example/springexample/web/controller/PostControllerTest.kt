@@ -27,7 +27,6 @@ internal class PostControllerTest {
     @Autowired lateinit var mapper: ObjectMapper
 
     @Test
-    @Order(2)
     fun getPostById() {
         val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/post/1"))
                 .andExpect(status().isOk)
@@ -36,11 +35,10 @@ internal class PostControllerTest {
                 .andExpect(jsonPath("\$.title").value("title"))
                 .andReturn()
 
-        println("LOG :::::::: ${result.response.contentAsString}")
+        println("${result.response.contentAsString}")
     }
 
     @Test
-    @Order(1)
     fun saveNewPost() {
         val post: Post = Post(1L, "title", Date())
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/post")
@@ -63,7 +61,6 @@ internal class PostControllerTest {
     }
 
     @Test
-    @Order(3)
     fun updatePost() {
         val post: Post = Post(1L, "101111000", Date())
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/post/1")
