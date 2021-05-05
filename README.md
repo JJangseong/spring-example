@@ -24,3 +24,4 @@
 1. Updated fetch in Comment
 2. Add Post Delete and Update
 3. Fix - infinite recursion
+4. Add MemberEntity
