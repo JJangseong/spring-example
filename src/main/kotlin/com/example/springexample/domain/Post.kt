@@ -11,7 +11,8 @@ data class Post(
         @Id @GeneratedValue val id: Long,
         var title: String = "",
         @Temporal(TemporalType.TIMESTAMP) val createdAt: Date? = Date(),
-        @OneToMany(mappedBy = "post") val comments: List<Comment>? = null
+        @OneToMany(mappedBy = "post") var comments: List<Comment>? = null,
+        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "member_id") val member: Member
 ) {
 
 }

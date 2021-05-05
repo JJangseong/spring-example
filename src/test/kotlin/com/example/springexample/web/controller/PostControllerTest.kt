@@ -1,9 +1,11 @@
 package com.example.springexample.web.controller
 
 import com.example.springexample.domain.Comment
+import com.example.springexample.domain.Member
 import com.example.springexample.domain.Post
+import com.example.springexample.web.repository.MemberRepository
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +15,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.TestConstructor
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.util.*
 
@@ -25,44 +26,44 @@ internal class PostControllerTest {
 
     @Autowired lateinit var mockMvc: MockMvc
     @Autowired lateinit var mapper: ObjectMapper
+    @Autowired lateinit var memberRepository: MemberRepository
+
+    lateinit var member: Member
+
+    @BeforeEach
+    fun init() {
+        member = Member(1L, 12F, "sungjin")
+
+        memberRepository.save(member)
+    }
+
 
     @Test
     fun getPostById() {
-        val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/post/1"))
+        val result = mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/post/2"))
                 .andExpect(status().isOk)
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("\$.id").value(1L))
+                .andExpect(jsonPath("\$.id").value(2L))
                 .andExpect(jsonPath("\$.title").value("title"))
                 .andReturn()
 
-        println("${result.response.contentAsString}")
+        println(result.response.contentAsString)
     }
 
     @Test
     fun saveNewPost() {
-        val post: Post = Post(1L, "title", Date())
+        val post: Post = Post(1L, "title", Date(), member = member)
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/post")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(post)))
                 .andExpect(status().isCreated)
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/comment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(Comment(content = "COmmentntnetnet", post = Post(1L)))))
-                .andExpect(MockMvcResultMatchers.status().isCreated)
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/comment")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(Comment(content = "zzzzz", post = Post(1L)))))
-                .andExpect(MockMvcResultMatchers.status().isCreated)
     }
 
     @Test
     fun updatePost() {
-        val post: Post = Post(1L, "101111000", Date())
+        val post: Post = Post(1L, "101111000", Date(), member = member)
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/post/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
