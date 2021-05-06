@@ -19,4 +19,16 @@ class CommentController {
         return ResponseEntity(HttpStatus.CREATED)
     }
 
+    @DeleteMapping("/{commentId}")
+    fun removeComment(@PathVariable("commentId") commentId: Long): ResponseEntity<Comment> {
+        commentRepository.deleteById(commentId)
+        return ResponseEntity(HttpStatus.OK)
+    }
+
+    @PutMapping
+    fun updateComment(@RequestBody comment: Comment): ResponseEntity<Comment> {
+        commentRepository.save(comment)
+        return ResponseEntity(HttpStatus.OK)
+    }
+
 }

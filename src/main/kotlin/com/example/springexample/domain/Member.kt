@@ -6,7 +6,7 @@ import javax.persistence.*
 data class Member(
         @Id @GeneratedValue val id: Long,
         val age: Float,
-        val name: String,
+        var name: String,
         @OneToMany(mappedBy = "member") val posts: List<Post>? = null
 ) {
 

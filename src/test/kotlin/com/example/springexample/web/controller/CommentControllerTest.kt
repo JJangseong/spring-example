@@ -1,9 +1,11 @@
 package com.example.springexample.web.controller
 
 import com.example.springexample.domain.Comment
+import com.example.springexample.domain.Member
 import com.example.springexample.domain.Post
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -16,29 +18,34 @@ import java.util.*
 
 @SpringBootTest
 @AutoConfigureMockMvc
-internal class CommentControllerTest {
+internal class CommentControllerTest: BaseTest() {
 
     @Autowired lateinit var mockMvc: MockMvc
     @Autowired lateinit var mapper: ObjectMapper
 
+    @BeforeEach
+    fun init() {
+        saveMemberByRepository()
+    }
+
     @Test
     fun saveComment() {
 
-//        val post = Post(1L, "title", Date())
-//        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/post")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .content(mapper.writeValueAsString(post)))
-//                .andExpect(MockMvcResultMatchers.status().isCreated)
-//
-//        val oldPost = Post(1L)
-//
-//        val comment = Comment(1L, "COmmentntnetnet", oldPost)
-//        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/comment")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//                .content(mapper.writeValueAsString(comment)))
-//                .andExpect(MockMvcResultMatchers.status().isCreated)
+        val post = Post(2L, "title", Date(), member = getMember())
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/post")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(post)))
+                .andExpect(MockMvcResultMatchers.status().isCreated)
+
+        val oldPost = Post(2L, member = getMember())
+
+        val comment = Comment(1L, "COmmentntnetnet", oldPost)
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(comment)))
+                .andExpect(MockMvcResultMatchers.status().isCreated)
     }
 }
 

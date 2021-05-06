@@ -22,19 +22,14 @@ import java.util.*
 @SpringBootTest
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @AutoConfigureMockMvc
-internal class PostControllerTest {
+internal class PostControllerTest: BaseTest() {
 
     @Autowired lateinit var mockMvc: MockMvc
     @Autowired lateinit var mapper: ObjectMapper
-    @Autowired lateinit var memberRepository: MemberRepository
-
-    lateinit var member: Member
 
     @BeforeEach
     fun init() {
-        member = Member(1L, 12F, "sungjin")
-
-        memberRepository.save(member)
+        saveMemberByRepository()
     }
 
 
@@ -52,7 +47,7 @@ internal class PostControllerTest {
 
     @Test
     fun saveNewPost() {
-        val post: Post = Post(1L, "title", Date(), member = member)
+        val post: Post = Post(1L, "title", Date(), member = getMember())
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/post")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -63,8 +58,8 @@ internal class PostControllerTest {
 
     @Test
     fun updatePost() {
-        val post: Post = Post(1L, "101111000", Date(), member = member)
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/post/1")
+        val post: Post = Post(1L, "101111000", Date(), member = getMember())
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/post")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(post)))

@@ -38,8 +38,8 @@ class PostController {
         return ResponseEntity(HttpStatus.OK)
     }
 
-    @PutMapping("/{postId}")
-    fun updatePost(@PathVariable("postId") postId: Long, @RequestBody post: Post): ResponseEntity<Post> {
+    @PutMapping
+    fun updatePost(@RequestBody post: Post): ResponseEntity<Post> {
         postRepository.save(post)
 
         return ResponseEntity(HttpStatus.OK)
