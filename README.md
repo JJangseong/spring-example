@@ -25,3 +25,7 @@
 2. Add Post Delete and Update
 3. Fix - infinite recursion
 4. Add MemberEntity
+
+### 2021-05-06
+1. Add Update and Delete Function in CommentController
+2. Add MemberController
