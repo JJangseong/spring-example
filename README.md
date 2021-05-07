@@ -32,3 +32,5 @@
 
 ## spring-batch
 1. Starting Spring Batch Example
+2. Add HelloJob
+3. Add ShareJob
