@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: auction-user
+
+server:
+  port: 9001
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
