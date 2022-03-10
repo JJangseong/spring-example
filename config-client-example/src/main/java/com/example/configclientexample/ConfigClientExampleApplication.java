@@ -1,13 +1,13 @@
-package com.example.springexample;
+package com.example.configclientexample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringExampleApplication {
+public class ConfigClientExampleApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringExampleApplication.class, args);
+        SpringApplication.run(ConfigClientExampleApplication.class, args);
     }
 
 }
